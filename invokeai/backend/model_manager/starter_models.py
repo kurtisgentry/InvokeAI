@@ -592,6 +592,15 @@ swinir = StarterModel(
 )
 
 # endregion
+# region CogView4
+cogview4 = StarterModel(
+    name="CogView4",
+    base=BaseModelType.CogView4,
+    source="THUDM/CogView4-6B",
+    description="The base CogView4 model.",
+    type=ModelType.Main,
+)
+# endregion
 
 
 # List of starter models, displayed on the frontend.
@@ -661,6 +670,7 @@ STARTER_MODELS: list[StarterModel] = [
     t5_base_encoder,
     t5_8b_quantized_encoder,
     clip_l_encoder,
+    cogview4,
 ]
 
 sd1_bundle: list[StarterModel] = [
