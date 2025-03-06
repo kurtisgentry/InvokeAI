@@ -216,23 +216,7 @@ class ModelOnDisk:
             self.name = path.name
 
     def lazy_load_state_dict(self) -> dict[str, torch.Tensor]:
-        if self.format_type == ModelFormat.Diffusers:
-            raise NotImplementedError()
-
-        with SilenceWarnings():
-            if self.path.suffix.endswith((".ckpt", ".pt", ".pth", ".bin")):
-                scan_result = scan_file_path(self.path)
-                if scan_result.infected_files != 0 or scan_result.scan_err:
-                    raise Exception("The model {model_name} is potentially infected by malware. Aborting import.")
-                checkpoint = torch.load(self.path, map_location="cpu")
-
-            elif self.path.suffix.endswith(".gguf"):
-                checkpoint = gguf_sd_loader(self.path, compute_dtype=torch.float32)
-            else:
-                checkpoint = safetensors.torch.load_file(self.path)
-
-        state_dict = checkpoint.get("state_dict") or checkpoint
-        return state_dict
+        raise NotImplementedError()
 
 
 class MatchSpeed(int, Enum):
