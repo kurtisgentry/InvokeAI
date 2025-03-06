@@ -30,20 +30,16 @@ from typing import ClassVar, Literal, Optional, TypeAlias, Union
 
 import diffusers
 import onnxruntime as ort
-import safetensors.torch
 import torch
 from diffusers.models.modeling_utils import ModelMixin
-from picklescan.scanner import scan_file_path
 from pydantic import BaseModel, ConfigDict, Discriminator, Field, Tag, TypeAdapter
 from typing_extensions import Annotated, Any, Dict
 
 from invokeai.app.util.misc import uuid_string
 from invokeai.backend.model_hash.hash_validator import validate_hash
 from invokeai.backend.model_hash.model_hash import HASHING_ALGORITHMS, ModelHash
-from invokeai.backend.quantization.gguf.loaders import gguf_sd_loader
 from invokeai.backend.raw_model import RawModel
 from invokeai.backend.stable_diffusion.schedulers.schedulers import SCHEDULER_NAME_VALUES
-from invokeai.backend.util.silence_warnings import SilenceWarnings
 
 logger = logging.getLogger(__name__)
 
