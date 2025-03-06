@@ -571,9 +571,9 @@ class IPAdapterCheckpointConfig(IPAdapterConfigBase, ModelConfigBase):
     format: Literal[ModelFormat.Checkpoint] = ModelFormat.Checkpoint
 
 
-
 class CLIPEmbedDiffusersConfig(DiffusersConfigBase):
     """Model config for Clip Embeddings."""
+
     variant: ClipVariantType = Field(description="Clip variant for this model")
     type: Literal[ModelType.CLIPEmbed] = ModelType.CLIPEmbed
     format: Literal[ModelFormat.Diffusers] = ModelFormat.Diffusers
@@ -582,6 +582,7 @@ class CLIPEmbedDiffusersConfig(DiffusersConfigBase):
 @legacy_probe
 class CLIPGEmbedDiffusersConfig(CLIPEmbedDiffusersConfig, ModelConfigBase):
     """Model config for CLIP-G Embeddings."""
+
     variant: Literal[ClipVariantType.G] = ClipVariantType.G
 
     @classmethod
@@ -590,9 +591,11 @@ class CLIPGEmbedDiffusersConfig(CLIPEmbedDiffusersConfig, ModelConfigBase):
 
 
 @legacy_probe
-class CLIPLEmbedDiffusersConfig(CLIPEmbedDiffusersConfig,  ModelConfigBase):
+class CLIPLEmbedDiffusersConfig(CLIPEmbedDiffusersConfig, ModelConfigBase):
     """Model config for CLIP-L Embeddings."""
+
     variant: Literal[ClipVariantType.L] = ClipVariantType.L
+
     @classmethod
     def get_tag(cls) -> Tag:
         return Tag(f"{ModelType.CLIPEmbed.value}.{ModelFormat.Diffusers.value}.{ClipVariantType.L.value}")
@@ -622,6 +625,7 @@ class SpandrelImageToImageConfig(ModelConfigBase):
 
     type: Literal[ModelType.SpandrelImageToImage] = ModelType.SpandrelImageToImage
     format: Literal[ModelFormat.Checkpoint] = ModelFormat.Checkpoint
+
 
 @legacy_probe
 class SigLIPConfig(DiffusersConfigBase, ModelConfigBase):

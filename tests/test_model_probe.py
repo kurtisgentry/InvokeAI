@@ -10,8 +10,43 @@ from polyfactory.factories.pydantic_factory import ModelFactory
 from sympy.testing.pytest import slow
 from torch import tensor
 
-from invokeai.backend.model_manager import BaseModelType, ModelRepoVariant
-from invokeai.backend.model_manager.config import *
+from invokeai.backend.model_manager.config import (
+    BaseModelType,
+    CLIPGEmbedDiffusersConfig,
+    CLIPLEmbedDiffusersConfig,
+    CLIPVisionDiffusersConfig,
+    ControlLoRADiffusersConfig,
+    ControlLoRALyCORISConfig,
+    ControlNetCheckpointConfig,
+    ControlNetDiffusersConfig,
+    FluxReduxConfig,
+    InvalidModelConfigException,
+    IPAdapterCheckpointConfig,
+    IPAdapterInvokeAIConfig,
+    LoRADiffusersConfig,
+    LoRALyCORISConfig,
+    MainBnbQuantized4bCheckpointConfig,
+    MainCheckpointConfig,
+    MainDiffusersConfig,
+    MainGGUFCheckpointConfig,
+    ModelConfigBase,
+    ModelConfigFactory,
+    ModelFormat,
+    ModelOnDisk,
+    ModelRepoVariant,
+    ModelType,
+    ModelVariantType,
+    SigLIPConfig,
+    SpandrelImageToImageConfig,
+    T2IAdapterConfig,
+    T5EncoderBnbQuantizedLlmInt8bConfig,
+    T5EncoderConfig,
+    TextualInversionFileConfig,
+    TextualInversionFolderConfig,
+    VAECheckpointConfig,
+    VAEDiffusersConfig,
+    concrete_subclasses,
+)
 from invokeai.backend.model_manager.legacy_probe import (
     CkptType,
     ModelProbe,
@@ -200,30 +235,48 @@ def test_serialisation_roundtrip():
 
 def test_inheritance_order():
     """
-       Safeguard test to warn against incorrect inheritance order.
+    Safeguard test to warn against incorrect inheritance order.
 
-       Config classes using multiple inheritance should inherit from ModelConfigBase last
-       to ensure that more specific fields take precedence over the generic defaults.
+    Config classes using multiple inheritance should inherit from ModelConfigBase last
+    to ensure that more specific fields take precedence over the generic defaults.
 
-       It may be worth rethinking our config taxonomy in the future, but in the meantime,
-       this test can help prevent the debugging effort I went through discovering this.
-       """
+    It may be worth rethinking our config taxonomy in the future, but in the meantime,
+    this test can help prevent the debugging effort I went through discovering this.
+    """
     for config_cls in concrete_subclasses(ModelConfigBase):
-        excluded = { abc.ABC, pydantic.BaseModel, object }
+        excluded = {abc.ABC, pydantic.BaseModel, object}
         inheritance_list = [cls for cls in config_cls.mro() if cls not in excluded]
         assert inheritance_list[-1] is ModelConfigBase
 
 
 def test_concrete_subclasses():
-    excluded = { MinimalConfigExample }
+    excluded = {MinimalConfigExample}
     config_classes = concrete_subclasses(ModelConfigBase) - excluded
     expected = {
-        CLIPGEmbedDiffusersConfig, MainGGUFCheckpointConfig, T2IAdapterConfig, TextualInversionFolderConfig,
-        IPAdapterInvokeAIConfig, ControlNetDiffusersConfig, ControlLoRALyCORISConfig, MainDiffusersConfig,
-        LoRALyCORISConfig, CLIPVisionDiffusersConfig, MainCheckpointConfig, T5EncoderConfig, IPAdapterCheckpointConfig,
-        VAEDiffusersConfig, LoRADiffusersConfig, ControlNetCheckpointConfig, FluxReduxConfig,
-        T5EncoderBnbQuantizedLlmInt8bConfig, SpandrelImageToImageConfig, MainBnbQuantized4bCheckpointConfig,
-        TextualInversionFileConfig, CLIPLEmbedDiffusersConfig, VAECheckpointConfig, ControlLoRADiffusersConfig,
+        CLIPGEmbedDiffusersConfig,
+        MainGGUFCheckpointConfig,
+        T2IAdapterConfig,
+        TextualInversionFolderConfig,
+        IPAdapterInvokeAIConfig,
+        ControlNetDiffusersConfig,
+        ControlLoRALyCORISConfig,
+        MainDiffusersConfig,
+        LoRALyCORISConfig,
+        CLIPVisionDiffusersConfig,
+        MainCheckpointConfig,
+        T5EncoderConfig,
+        IPAdapterCheckpointConfig,
+        VAEDiffusersConfig,
+        LoRADiffusersConfig,
+        ControlNetCheckpointConfig,
+        FluxReduxConfig,
+        T5EncoderBnbQuantizedLlmInt8bConfig,
+        SpandrelImageToImageConfig,
+        MainBnbQuantized4bCheckpointConfig,
+        TextualInversionFileConfig,
+        CLIPLEmbedDiffusersConfig,
+        VAECheckpointConfig,
+        ControlLoRADiffusersConfig,
         SigLIPConfig,
     }
     assert config_classes == expected
